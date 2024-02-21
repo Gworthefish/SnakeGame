@@ -19,9 +19,9 @@ namespace SnakeGame
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Esconde el menú principal.
+            this.Hide(); 
             Form1 juego = new Form1();
-            juego.FormClosed += (s, args) => this.Close(); // Cerrar el menú principal cuando se cierre el juego.
+            juego.FormClosed += (s, args) => this.Close(); 
             juego.Show();
         }
 
