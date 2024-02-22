@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SnakeGame.Factory.Creadores_concretos;
+using SnakeGame.Factory;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,10 +38,13 @@ namespace SnakeGame
         private PictureBox pictureBox;
         private List<Point> serpiente;
         private Point comidita;
-      
+        
         private Direction direccion;
         private Thread hiloJuego;
         private bool jugando;
+        Random random;
+        Juego j;
+        PowerUp pu;
 
         private enum Direction { Up, Down, Left, Right }
         Serpiente snake;
@@ -49,6 +54,7 @@ namespace SnakeGame
             InitializeComponent();
             this.snake = snake;
             Jugar();
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -66,8 +72,14 @@ namespace SnakeGame
             direccion = Direction.Right;
             serpiente = new List<Point>();
             serpiente.Add(new Point(anchoTablero / 2, alturaTablero / 2));
-            GenerarComidita();
-           
+
+            random = new Random();
+            GenerarComidita(random);// metodo random para generar la posion
+
+            j = new JuegoVelocidad();
+            pu = j.CrearPowerUp();
+            j.GenerarPosicion(pu, anchoTablero, alturaTablero, random);// metodo random para generar la posion
+
             pictureBox = new PictureBox();
             pictureBox.Size = new Size(anchoTablero * tamCelda, alturaTablero * tamCelda);
             pictureBox.Location = new Point(10, 10);
@@ -78,6 +90,15 @@ namespace SnakeGame
             hiloJuego = new Thread(BucleJuego);
             hiloJuego.Start();
            
+        }
+        public void a(Graphics g)
+        {
+            Juego juego = new JuegoVelocidad();
+            PowerUp powerUp = juego.CrearPowerUp();
+            juego.RenderizarPowerUp(powerUp,tamCelda,g);
+           
+            powerUp.AplicarEfecto();
+
         }
 
         /// <summary>
@@ -98,6 +119,7 @@ namespace SnakeGame
                 }
             }
             DibujarSerpiente(g);
+            j.RenderizarPowerUp(pu, tamCelda, g);
             DibujarComidita(g);
         }
 
@@ -137,11 +159,11 @@ namespace SnakeGame
         /// Utiliza un objeto Random para generar coordenadas aleatorias dentro del rango del tablero de juego.
         /// La posición de la comida se establece en una nueva coordenada (X, Y) generada aleatoriamente.
         /// </summary>
-        private void GenerarComidita()
+        private void GenerarComidita(Random random)
         {
             nivel++;
             Console.WriteLine(nivel);
-            Random random = new Random();
+           
             comidita = new Point(random.Next(anchoTablero), random.Next(alturaTablero));
         }
 
@@ -200,7 +222,8 @@ namespace SnakeGame
             }
             else
             {
-                GenerarComidita();
+
+                GenerarComidita(random);
             }
         }
 
