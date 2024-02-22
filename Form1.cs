@@ -42,11 +42,12 @@ namespace SnakeGame
         private bool jugando;
 
         private enum Direction { Up, Down, Left, Right }
-
+        Serpiente snake;
         #endregion
-        public Form1()
+        public Form1(Serpiente snake)
         {
             InitializeComponent();
+            this.snake = snake;
             Jugar();
         }
 
@@ -87,6 +88,15 @@ namespace SnakeGame
         private void PintarJuego(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            // Pintar el fondo de cada celda de blanco
+            for (int x = 0; x < anchoTablero; x++)
+            {
+                for (int y = 0; y < alturaTablero; y++)
+                {
+                    g.DrawRectangle(Pens.White, x * tamCelda, y * tamCelda, tamCelda, tamCelda);
+                }
+            }
             DibujarSerpiente(g);
             DibujarComidita(g);
         }
@@ -100,10 +110,14 @@ namespace SnakeGame
 
         private void DibujarSerpiente(Graphics g)
         {
-            foreach (Point segment in serpiente)
+            using (SolidBrush brush = new SolidBrush(snake.Color))
             {
-                g.FillRectangle(Brushes.Green, segment.X * tamCelda, segment.Y * tamCelda, tamCelda, tamCelda);
+                foreach (Point segment in serpiente)
+                {
+                    g.FillRectangle(brush, segment.X * tamCelda, segment.Y * tamCelda, tamCelda, tamCelda);
+                }
             }
+            
         }
 
         /// <summary>

@@ -28,50 +28,103 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipal));
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btn_personalizarSerp = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.br = new System.Windows.Forms.PictureBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.br)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(76, 46);
+            this.button1.Location = new System.Drawing.Point(32, 46);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(238, 39);
+            this.button1.Size = new System.Drawing.Size(237, 39);
             this.button1.TabIndex = 0;
             this.button1.Text = "Jugar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btn_personalizarSerp
             // 
-            this.button2.Location = new System.Drawing.Point(76, 113);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(238, 41);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Personalizar Serpiente";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btn_personalizarSerp.Location = new System.Drawing.Point(32, 102);
+            this.btn_personalizarSerp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_personalizarSerp.Name = "btn_personalizarSerp";
+            this.btn_personalizarSerp.Size = new System.Drawing.Size(237, 41);
+            this.btn_personalizarSerp.TabIndex = 1;
+            this.btn_personalizarSerp.Text = "Personalizar Serpiente";
+            this.btn_personalizarSerp.UseVisualStyleBackColor = true;
+            this.btn_personalizarSerp.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(76, 181);
+            this.button3.Location = new System.Drawing.Point(32, 160);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(238, 42);
+            this.button3.Size = new System.Drawing.Size(237, 42);
             this.button3.TabIndex = 2;
             this.button3.Text = "Crear Nivel";
             this.button3.UseVisualStyleBackColor = true;
+            // 
+            // colorDialog2
+            // 
+            this.colorDialog2.Color = System.Drawing.Color.GreenYellow;
+            this.colorDialog2.FullOpen = true;
+            // 
+            // br
+            // 
+            this.br.Image = ((System.Drawing.Image)(resources.GetObject("br.Image")));
+            this.br.InitialImage = ((System.Drawing.Image)(resources.GetObject("br.InitialImage")));
+            this.br.Location = new System.Drawing.Point(307, 14);
+            this.br.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.br.Name = "br";
+            this.br.Size = new System.Drawing.Size(528, 366);
+            this.br.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.br.TabIndex = 3;
+            this.br.TabStop = false;
+            this.br.Click += new System.EventHandler(this.br_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(32, 219);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(237, 42);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "Personalizar Nivel";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(32, 279);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(237, 42);
+            this.button5.TabIndex = 5;
+            this.button5.Text = "Score";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1010, 545);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.ClientSize = new System.Drawing.Size(844, 404);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.br);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btn_personalizarSerp);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MenuPrincipal";
             this.Text = "MenuPrincipal";
+            this.Load += new System.EventHandler(this.MenuPrincipal_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.br)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -79,7 +132,12 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_personalizarSerp;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.PictureBox br;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
