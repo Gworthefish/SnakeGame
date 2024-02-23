@@ -10,6 +10,8 @@ namespace SnakeGame
     public class Serpiente
     {
         private Color color;
+        public int Speed { get; set; } = 300;
+        public int Slownes { get; set; }
 
         // Constructor que establece el color inicial de la serpiente
         public Serpiente(Color colorInicial)

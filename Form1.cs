@@ -1,4 +1,4 @@
-﻿using SnakeGame.Factory.Creadores_concretos;
+﻿
 using SnakeGame.Factory;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SnakeGame.Factory.Creador;
+using System.Runtime.CompilerServices;
+using SnakeGame.Factory.Producto;
 
 namespace SnakeGame
 {
@@ -38,16 +41,16 @@ namespace SnakeGame
         private PictureBox pictureBox;
         private List<Point> serpiente;
         private Point comidita;
-        
+        private Point positionAux;
         private Direction direccion;
         private Thread hiloJuego;
         private bool jugando;
+        IPowerUp powerUpAux;
         Random random;
-        Juego j;
-        PowerUp pu;
-
+    
         private enum Direction { Up, Down, Left, Right }
         Serpiente snake;
+        private int velocidadSerpiente = 300;
         #endregion
         public Form1(Serpiente snake)
         {
@@ -72,13 +75,24 @@ namespace SnakeGame
             direccion = Direction.Right;
             serpiente = new List<Point>();
             serpiente.Add(new Point(anchoTablero / 2, alturaTablero / 2));
-
+            //------------------
+            
             random = new Random();
             GenerarComidita(random);// metodo random para generar la posion
 
-            j = new JuegoVelocidad();
-            pu = j.CrearPowerUp();
-            j.GenerarPosicion(pu, anchoTablero, alturaTablero, random);// metodo random para generar la posion
+            PowerUpFactory factory = new SlownesPowerUpFactory();
+            Point position = GetRandomGridPosition();
+            IPowerUp powerUp = factory.CreatePowerUp(position);
+            
+            Console.WriteLine("Power UP __ "+ position.X+ "  "+ position.Y);
+            powerUpAux = powerUp;
+            positionAux = position;
+
+            //j = new JuegoVelocidad();
+            //pu = j.CrearPowerUp();
+            //j.GenerarPosicion(pu, anchoTablero, alturaTablero, random);// metodo random para generar la posion
+            //---------------
+
 
             pictureBox = new PictureBox();
             pictureBox.Size = new Size(anchoTablero * tamCelda, alturaTablero * tamCelda);
@@ -91,15 +105,7 @@ namespace SnakeGame
             hiloJuego.Start();
            
         }
-        public void a(Graphics g)
-        {
-            Juego juego = new JuegoVelocidad();
-            PowerUp powerUp = juego.CrearPowerUp();
-            juego.RenderizarPowerUp(powerUp,tamCelda,g);
-           
-            powerUp.AplicarEfecto();
-
-        }
+       
 
         /// <summary>
         /// Manejador de eventos para dibujar la serpiente y la comida en un control gráfico.
@@ -119,8 +125,10 @@ namespace SnakeGame
                 }
             }
             DibujarSerpiente(g);
-            j.RenderizarPowerUp(pu, tamCelda, g);
+            //j.RenderizarPowerUp(pu, tamCelda, g);
+
             DibujarComidita(g);
+            powerUpAux.Render(e.Graphics);
         }
 
         /// <summary>
@@ -163,7 +171,7 @@ namespace SnakeGame
         {
             nivel++;
             Console.WriteLine(nivel);
-           
+            
             comidita = new Point(random.Next(anchoTablero), random.Next(alturaTablero));
         }
 
@@ -181,9 +189,8 @@ namespace SnakeGame
                 MoverSerpiente();
                 revisarChoque();
 
-                
                 pictureBox.Invalidate();
-                Thread.Sleep(300); // Velocidad del juego
+                Thread.Sleep(velocidadSerpiente); // Velocidad del juego
             }
         }
 
@@ -198,6 +205,7 @@ namespace SnakeGame
         {
             Point cabeza = serpiente[0];
             Point nuevaCabeza = new Point(cabeza.X, cabeza.Y);
+          
 
             switch (direccion)
             {
@@ -216,17 +224,56 @@ namespace SnakeGame
             }
 
             serpiente.Insert(0, nuevaCabeza);
+            if (SerpienteTocoPowerUp(serpiente[0], positionAux))
+            {
+
+                PowerUpFactory factory;
+                if (random.Next(2) == 0)
+                {
+                    factory = new SpeedPowerUpFactory();
+                }
+                else
+                {
+                    factory = new SlownesPowerUpFactory();
+                }
+
+                Point position = GetRandomGridPosition();
+                IPowerUp powerUp = factory.CreatePowerUp(position);
+                powerUpAux=powerUp;
+                positionAux = position;
+
+               
+
+
+            }
             if (nuevaCabeza != comidita)
             {
                 serpiente.RemoveAt(serpiente.Count - 1);
             }
             else
             {
-
+               
                 GenerarComidita(random);
+                
+
             }
+           
+        }
+        private Point GetRandomGridPosition()
+        {
+            Point po;
+
+            po = new Point(random.Next(anchoTablero), random.Next(alturaTablero));
+
+            return po;
         }
 
+        private bool SerpienteTocoPowerUp(Point cabeza, Point powerUp)
+        {
+            Console.WriteLine("Cabeza" + cabeza.X +" "+cabeza.Y);
+            Console.WriteLine("Power" + powerUp.X + " " + powerUp.Y);
+            return cabeza.X == powerUp.X && cabeza.Y == powerUp.Y;
+        }
         /// <summary>
         /// Verifica si ha ocurrido una colisión de la cabeza de la serpiente con las paredes del tablero o con el cuerpo de la serpiente.
         /// Si la cabeza de la serpiente está fuera del tablero o choca con su propio cuerpo, finaliza el juego y muestra un mensaje de pérdida.
