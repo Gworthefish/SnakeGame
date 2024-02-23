@@ -38,6 +38,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textTamSerpi = new System.Windows.Forms.Label();
             this.textPuntos = new System.Windows.Forms.Label();
+            this.textTamSerpi2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -148,11 +150,36 @@
             this.textPuntos.TabIndex = 9;
             this.textPuntos.Text = "0";
             // 
+            // textTamSerpi2
+            // 
+            this.textTamSerpi2.AutoSize = true;
+            this.textTamSerpi2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.textTamSerpi2.Location = new System.Drawing.Point(828, 210);
+            this.textTamSerpi2.Name = "textTamSerpi2";
+            this.textTamSerpi2.Size = new System.Drawing.Size(27, 29);
+            this.textTamSerpi2.TabIndex = 11;
+            this.textTamSerpi2.Text = "0";
+            this.textTamSerpi2.Click += new System.EventHandler(this.label2_Click_1);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.label3.Location = new System.Drawing.Point(598, 210);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(224, 29);
+            this.label3.TabIndex = 10;
+            this.label3.Tag = "d";
+            this.label3.Text = "Tamaño serpiente:";
+            this.label3.Click += new System.EventHandler(this.label3_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1397, 689);
+            this.Controls.Add(this.textTamSerpi2);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.textPuntos);
             this.Controls.Add(this.textTamSerpi);
             this.Controls.Add(this.label4);
@@ -184,6 +211,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label textTamSerpi;
         private System.Windows.Forms.Label textPuntos;
+        private System.Windows.Forms.Label textTamSerpi2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

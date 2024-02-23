@@ -43,10 +43,13 @@ namespace SnakeGame
 
 
         private PictureBox pictureBox;
+        private PictureBox pictureBox2;
         private List<Point> serpiente;
+        private List<Point> serpiente2;
         private Point comidita;
         private Point positionAux;
         private Direction direccion;
+        private Direction direccionJugador2;
         private Thread hiloJuego;
         private bool jugando;
         IPowerUp powerUpAux;
@@ -79,8 +82,12 @@ namespace SnakeGame
             direccion = Direction.Right;
             serpiente = new List<Point>();
             serpiente.Add(new Point(anchoTablero / 2, alturaTablero / 2));
-           
-            
+
+            direccionJugador2 = Direction.Right;
+            serpiente2 = new List<Point>();
+            serpiente2.Add(new Point(anchoTablero / 2-2, alturaTablero / 2-2));
+
+
             random = new Random();
             GenerarComidita(random);// metodo random para generar la posion
 
@@ -102,13 +109,21 @@ namespace SnakeGame
             pictureBox.Paint += PintarJuego;
             Controls.Add(pictureBox);
 
-           
 
+            pictureBox2 = new PictureBox();
+            pictureBox2.Size = new Size(anchoTablero * tamCelda, alturaTablero * tamCelda);
+            pictureBox2.Location = new Point(600, 10);
+            pictureBox2.BackColor = Color.Black;
+            pictureBox2.Paint += PintarJuego;
+            Controls.Add(pictureBox2);
+
+         
 
             hiloJuego = new Thread(BucleJuego);
             hiloJuego.Start();
 
-           
+          
+
         }
        
 
@@ -121,7 +136,7 @@ namespace SnakeGame
         {
             Graphics g = e.Graphics;
 
-            // Pintar el fondo de cada celda de blanco
+           
             for (int x = 0; x < anchoTablero; x++)
             {
                 for (int y = 0; y < alturaTablero; y++)
@@ -130,7 +145,8 @@ namespace SnakeGame
                 }
             }
             DibujarSerpiente(g);
-            //j.RenderizarPowerUp(pu, tamCelda, g);
+            DibujarSerpiente2(g);
+            
 
             DibujarComidita(g);
             powerUpAux.Render(e.Graphics);
@@ -153,6 +169,17 @@ namespace SnakeGame
                 }
             }
             
+        }
+        private void DibujarSerpiente2(Graphics g)
+        {
+            using (SolidBrush brush = new SolidBrush(Color.Pink))
+            {
+                foreach (Point segment in serpiente2)
+                {
+                    g.FillRectangle(brush, segment.X * tamCelda, segment.Y * tamCelda, tamCelda, tamCelda);
+                }
+            }
+
         }
 
         /// <summary>
@@ -192,18 +219,23 @@ namespace SnakeGame
            
             while (jugando)
             {
-                MoverSerpiente();
-                revisarChoque();
+                MoverSerpiente(serpiente, direccion);
+                MoverSerpiente(serpiente2, direccionJugador2);
+
+                revisarChoque(serpiente, serpiente2); 
+                revisarChoque(serpiente2, serpiente); 
                 puntos += 5;
                 pictureBox.Invalidate();
-               
-                Thread.Sleep(snake.Speed); // Velocidad del juego
+                pictureBox2.Invalidate();
+
+                Thread.Sleep(snake.Speed); 
 
                 
                 ActualizarText(textVelocidad,"" + snake.Speed);
                 ActualizarText(textNivel, "" + nivel);
                 ActualizarText(textPuntos, "" + puntos);
                 ActualizarText(textTamSerpi, "" + serpiente.Count);
+                ActualizarText(textTamSerpi2, "" + serpiente2.Count);
 
             }
         }
@@ -226,15 +258,15 @@ namespace SnakeGame
         /// Genera una nueva posición para la comida si la cabeza de la serpiente alcanza la comida.
         /// </summary>
 
-        private void MoverSerpiente()
+        private void MoverSerpiente(List<Point> serpienteActual, Direction direccionActual)
         {
-            Point cabeza = serpiente[0];
+            Point cabeza = serpienteActual[0];
             Point nuevaCabeza = new Point(cabeza.X, cabeza.Y);
-          
 
-            switch (direccion)
+            switch (direccionActual)
             {
                 case Direction.Up:
+                    
                     nuevaCabeza.Y--;
                     break;
                 case Direction.Down:
@@ -248,7 +280,7 @@ namespace SnakeGame
                     break;
             }
 
-            serpiente.Insert(0, nuevaCabeza);
+            serpienteActual.Insert(0, nuevaCabeza);
             if (SerpienteTocoPowerUp(serpiente[0], positionAux))
             {
                 powerUpAux.ApplyEffect(snake);
@@ -291,8 +323,8 @@ namespace SnakeGame
             }
             if (nuevaCabeza != comidita)
             {
-                serpiente.RemoveAt(serpiente.Count - 1);
-               
+                serpienteActual.RemoveAt(serpienteActual.Count - 1);
+
             }
             else
             {
@@ -322,23 +354,36 @@ namespace SnakeGame
         /// Si la cabeza de la serpiente está fuera del tablero o choca con su propio cuerpo, finaliza el juego y muestra un mensaje de pérdida.
         /// </summary>
 
-        private void revisarChoque()
+        private void revisarChoque(List<Point> serpienteActual, List<Point> otraSerpiente)
         {
-            Point cabeza = serpiente[0];
+            Point cabeza = serpienteActual[0];
 
+            // Verifica colisión con los bordes del tablero
             if (cabeza.X < 0 || cabeza.X >= anchoTablero || cabeza.Y < 0 || cabeza.Y >= alturaTablero)
             {
                 jugando = false;
-                MessageBox.Show("Perdiste!!!!");
+                MessageBox.Show("¡Perdiste! La serpiente chocó con el borde.");
                 return;
             }
 
-            for (int i = 1; i < serpiente.Count; i++)
+            // Verifica colisión con sí misma
+            for (int i = 1; i < serpienteActual.Count; i++)
             {
-                if (cabeza == serpiente[i])
+                if (cabeza == serpienteActual[i])
                 {
                     jugando = false;
-                    MessageBox.Show("Perdiste!!!!");
+                    MessageBox.Show("¡Perdiste! La serpiente chocó consigo misma.");
+                    return;
+                }
+            }
+
+            // Verifica colisión con la otra serpiente
+            foreach (Point segmento in otraSerpiente)
+            {
+                if (cabeza == segmento)
+                {
+                    jugando = false;
+                    MessageBox.Show("¡Perdiste! Una serpiente chocó con la otra.");
                     return;
                 }
             }
@@ -353,6 +398,27 @@ namespace SnakeGame
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            switch (keyData)
+            {
+                case Keys.W:
+                    if (direccionJugador2 != Direction.Down)
+                        
+                    direccionJugador2 = Direction.Up;
+                    break;
+                case Keys.S:
+                    if (direccionJugador2 != Direction.Up)
+                        direccionJugador2 = Direction.Down;
+                    break;
+                case Keys.A:
+                    if (direccionJugador2 != Direction.Right)
+                        direccionJugador2 = Direction.Left;
+                    break;
+                case Keys.D:
+                    if (direccionJugador2 != Direction.Left)
+                        direccionJugador2 = Direction.Right;
+                    break;
+            }
+
             switch (keyData)
             {
                 case Keys.Up:
@@ -402,6 +468,16 @@ namespace SnakeGame
         }
 
         private void label4_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click_1(object sender, EventArgs e)
         {
 
         }
