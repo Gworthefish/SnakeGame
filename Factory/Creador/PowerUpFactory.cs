@@ -30,4 +30,11 @@ namespace SnakeGame.Factory.Creador
             return new SlownesPowerUp(position);
         }
     }
+    public class ShortPowerUpFactory : PowerUpFactory 
+    {
+        public override IPowerUp CreatePowerUp(Point position)
+        {
+            return new ShortPowerUp(position);
+        }
+    }
 }

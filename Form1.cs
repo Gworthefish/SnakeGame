@@ -37,7 +37,11 @@ namespace SnakeGame
         private const int anchoTablero = 20;
         private const int alturaTablero = 20;
         private const int tamInicialSerpiente = 3;
+
         private int nivel = 0;
+        private int puntos = 0;
+
+
         private PictureBox pictureBox;
         private List<Point> serpiente;
         private Point comidita;
@@ -75,7 +79,7 @@ namespace SnakeGame
             direccion = Direction.Right;
             serpiente = new List<Point>();
             serpiente.Add(new Point(anchoTablero / 2, alturaTablero / 2));
-            //------------------
+           
             
             random = new Random();
             GenerarComidita(random);// metodo random para generar la posion
@@ -84,25 +88,26 @@ namespace SnakeGame
             Point position = GetRandomGridPosition();
             IPowerUp powerUp = factory.CreatePowerUp(position);
             
-            Console.WriteLine("Power UP __ "+ position.X+ "  "+ position.Y);
+          
             powerUpAux = powerUp;
             positionAux = position;
 
-            //j = new JuegoVelocidad();
-            //pu = j.CrearPowerUp();
-            //j.GenerarPosicion(pu, anchoTablero, alturaTablero, random);// metodo random para generar la posion
-            //---------------
-
+         
+       
 
             pictureBox = new PictureBox();
             pictureBox.Size = new Size(anchoTablero * tamCelda, alturaTablero * tamCelda);
-            pictureBox.Location = new Point(10, 10);
+            pictureBox.Location = new Point(0, 10);
             pictureBox.BackColor = Color.Black; 
             pictureBox.Paint += PintarJuego;
             Controls.Add(pictureBox);
 
+           
+
+
             hiloJuego = new Thread(BucleJuego);
             hiloJuego.Start();
+
            
         }
        
@@ -170,6 +175,7 @@ namespace SnakeGame
         private void GenerarComidita(Random random)
         {
             nivel++;
+            puntos += 100;
             Console.WriteLine(nivel);
             
             comidita = new Point(random.Next(anchoTablero), random.Next(alturaTablero));
@@ -183,14 +189,33 @@ namespace SnakeGame
         /// </summary>
         private void BucleJuego()
         {
-            
+           
             while (jugando)
             {
                 MoverSerpiente();
                 revisarChoque();
-
+                puntos += 5;
                 pictureBox.Invalidate();
-                Thread.Sleep(velocidadSerpiente); // Velocidad del juego
+               
+                Thread.Sleep(snake.Speed); // Velocidad del juego
+
+                
+                ActualizarText(textVelocidad,"" + snake.Speed);
+                ActualizarText(textNivel, "" + nivel);
+                ActualizarText(textPuntos, "" + puntos);
+                ActualizarText(textTamSerpi, "" + serpiente.Count);
+
+            }
+        }
+        private void ActualizarText(Label label,string texto)
+        {
+            if (label.InvokeRequired)
+            {
+                label.Invoke(new Action<Label,string>(ActualizarText),label, texto);
+            }
+            else
+            {
+                label.Text = texto;
             }
         }
 
@@ -226,29 +251,48 @@ namespace SnakeGame
             serpiente.Insert(0, nuevaCabeza);
             if (SerpienteTocoPowerUp(serpiente[0], positionAux))
             {
-
-                PowerUpFactory factory;
-                if (random.Next(2) == 0)
+                powerUpAux.ApplyEffect(snake);
+                if (snake.Count == -1 && serpiente.Count > 1)
                 {
-                    factory = new SpeedPowerUpFactory();
+                    serpiente.RemoveAt(serpiente.Count - 2);
+                    snake.Count = 0;
                 }
-                else
+              
+                PowerUpFactory factory;
+
+                int powerUpType = random.Next(3); // Ahora tienes 4 opciones: 0, 1, 2, y 3
+
+                switch (powerUpType)
                 {
-                    factory = new SlownesPowerUpFactory();
+                    case 0:
+                        factory = new SpeedPowerUpFactory();
+                        break;
+                    case 1:
+                        factory = new SlownesPowerUpFactory();
+                        break;
+                    case 2:
+                        factory = new ShortPowerUpFactory(); 
+                        break;
+                    default:
+                        
+                        factory = null;
+                        break;
                 }
 
                 Point position = GetRandomGridPosition();
                 IPowerUp powerUp = factory.CreatePowerUp(position);
                 powerUpAux=powerUp;
                 positionAux = position;
+                
 
-               
+
 
 
             }
             if (nuevaCabeza != comidita)
             {
                 serpiente.RemoveAt(serpiente.Count - 1);
+               
             }
             else
             {
@@ -270,8 +314,7 @@ namespace SnakeGame
 
         private bool SerpienteTocoPowerUp(Point cabeza, Point powerUp)
         {
-            Console.WriteLine("Cabeza" + cabeza.X +" "+cabeza.Y);
-            Console.WriteLine("Power" + powerUp.X + " " + powerUp.Y);
+          
             return cabeza.X == powerUp.X && cabeza.Y == powerUp.Y;
         }
         /// <summary>
@@ -331,6 +374,36 @@ namespace SnakeGame
               
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click_2(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SnakeGame.Factory.Producto
 
         public void ApplyEffect(Serpiente player)
         {
-            player.Speed += 10;
+            player.Speed = 200;
            
         }
 
@@ -52,7 +52,7 @@ namespace SnakeGame.Factory.Producto
 
         public void ApplyEffect(Serpiente player)
         {
-            player.Slownes += 10; 
+            player.Speed = 600; 
         }
 
         public void Render(Graphics g)
@@ -60,6 +60,29 @@ namespace SnakeGame.Factory.Producto
             
             g.FillRectangle(new SolidBrush(Color), Position.X*20, Position.Y*20, 20, 20);
             
+        }
+    }
+
+    public class ShortPowerUp : IPowerUp
+    {
+        public Point Position { get; set; }
+        public Color Color { get; set; } = Color.Yellow;
+
+        public ShortPowerUp(Point position)
+        {
+            Position = position;
+        }
+
+        public void ApplyEffect(Serpiente serpiente)
+        {
+            serpiente.Count = -1;
+        }
+
+        public void Render(Graphics g)
+        {
+
+            g.FillRectangle(new SolidBrush(Color), Position.X * 20, Position.Y * 20, 20, 20);
+
         }
     }
 
