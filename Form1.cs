@@ -214,8 +214,8 @@ namespace SnakeGame
            
             while (jugando)
             {
-                MoverSerpiente(serpiente, direccion);
-                MoverSerpiente(serpiente2, direccionJugador2);
+                MoverSerpiente(serpiente, direccion,snake);
+                MoverSerpiente(serpiente2, direccionJugador2, snake2);
 
                 revisarChoque(serpiente, serpiente2); 
                 revisarChoque(serpiente2, serpiente); 
@@ -227,11 +227,13 @@ namespace SnakeGame
 
                 
                 ActualizarText(textVelocidad,"" + snake.Speed);
+                ActualizarText(textTamSerpi, "" + serpiente.Count);
+
+                ActualizarText(textTamSerpi2, "" + serpiente2.Count);
+                ActualizarText(textVelocidad2, "" + snake2.Speed);
+
                 ActualizarText(textNivel, "" + nivel);
                 ActualizarText(textPuntos, "" + puntos);
-                ActualizarText(textTamSerpi, "" + serpiente.Count);
-                ActualizarText(textTamSerpi2, "" + serpiente2.Count);
-
             }
         }
         private void ActualizarText(Label label,string texto)
@@ -253,7 +255,7 @@ namespace SnakeGame
         /// Genera una nueva posición para la comida si la cabeza de la serpiente alcanza la comida.
         /// </summary>
 
-        private void MoverSerpiente(List<Point> serpienteActual, Direction direccionActual)
+        private void MoverSerpiente(List<Point> serpienteActual, Direction direccionActual, Serpiente snake)
         {
             Point cabeza = serpienteActual[0];
             Point nuevaCabeza = new Point(cabeza.X, cabeza.Y);
@@ -276,7 +278,7 @@ namespace SnakeGame
             }
 
             serpienteActual.Insert(0, nuevaCabeza);
-            if (SerpienteTocoPowerUp(serpiente[0], positionAux))
+            if (SerpienteTocoPowerUp(serpiente[0], positionAux)|| SerpienteTocoPowerUp(serpiente2[0], positionAux))
             {
                 powerUpAux.ApplyEffect(snake);
                 if (snake.Count == -1 && serpiente.Count > 1)
@@ -287,7 +289,7 @@ namespace SnakeGame
               
                 PowerUpFactory factory;
 
-                int powerUpType = random.Next(3); // Ahora tienes 4 opciones: 0, 1, 2, y 3
+                int powerUpType = random.Next(3); 
 
                 switch (powerUpType)
                 {
@@ -473,6 +475,33 @@ namespace SnakeGame
         }
 
         private void label3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (jugando == true)
+            {
+                jugando = false;
+            }
+            else
+            {
+                jugando = true;
+            }
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            jugando = false;
+            this.Hide();
+            MenuPrincipal juego =  new MenuPrincipal(snake, snake2);
+            juego.FormClosed += (s, args) => this.Close();
+            juego.Show();
+        }
+
+        private void label2_Click_2(object sender, EventArgs e)
         {
 
         }

@@ -34,16 +34,15 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.br = new System.Windows.Forms.PictureBox();
-            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.br)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(32, 105);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Location = new System.Drawing.Point(24, 82);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(237, 39);
+            this.button1.Size = new System.Drawing.Size(178, 60);
             this.button1.TabIndex = 0;
             this.button1.Text = "Jugar";
             this.button1.UseVisualStyleBackColor = true;
@@ -51,10 +50,10 @@
             // 
             // btn_personalizarSerp
             // 
-            this.btn_personalizarSerp.Location = new System.Drawing.Point(32, 161);
-            this.btn_personalizarSerp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_personalizarSerp.Location = new System.Drawing.Point(24, 157);
+            this.btn_personalizarSerp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_personalizarSerp.Name = "btn_personalizarSerp";
-            this.btn_personalizarSerp.Size = new System.Drawing.Size(237, 41);
+            this.btn_personalizarSerp.Size = new System.Drawing.Size(178, 61);
             this.btn_personalizarSerp.TabIndex = 1;
             this.btn_personalizarSerp.Text = "Personalizar Serpiente";
             this.btn_personalizarSerp.UseVisualStyleBackColor = true;
@@ -69,35 +68,25 @@
             // 
             this.br.Image = ((System.Drawing.Image)(resources.GetObject("br.Image")));
             this.br.InitialImage = ((System.Drawing.Image)(resources.GetObject("br.InitialImage")));
-            this.br.Location = new System.Drawing.Point(307, 14);
-            this.br.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.br.Location = new System.Drawing.Point(230, 11);
+            this.br.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.br.Name = "br";
-            this.br.Size = new System.Drawing.Size(528, 366);
+            this.br.Size = new System.Drawing.Size(396, 297);
             this.br.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.br.TabIndex = 3;
             this.br.TabStop = false;
             this.br.Click += new System.EventHandler(this.br_Click);
             // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(32, 222);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(237, 42);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Score";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
             // MenuPrincipal
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(844, 404);
-            this.Controls.Add(this.button5);
+            this.ClientSize = new System.Drawing.Size(633, 328);
             this.Controls.Add(this.br);
             this.Controls.Add(this.btn_personalizarSerp);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "MenuPrincipal";
             this.Text = "MenuPrincipal";
             this.Load += new System.EventHandler(this.MenuPrincipal_Load);
@@ -113,6 +102,5 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.PictureBox br;
-        private System.Windows.Forms.Button button5;
     }
 }
