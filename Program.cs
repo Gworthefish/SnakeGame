@@ -19,9 +19,10 @@ namespace SnakeGame
         static void Main()
         {
             Serpiente s= new Serpiente(Color.Green);
+            Serpiente s2 = new Serpiente(Color.Green);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MenuPrincipal(s));
+            Application.Run(new MenuPrincipal(s,s2));
         }
     }
 }

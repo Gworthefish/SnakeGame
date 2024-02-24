@@ -57,14 +57,15 @@ namespace SnakeGame
     
         private enum Direction { Up, Down, Left, Right }
         Serpiente snake;
+        Serpiente snake2;
         private int velocidadSerpiente = 300;
         #endregion
-        public Form1(Serpiente snake)
+        public Form1(Serpiente snake, Serpiente snake2)
         {
             InitializeComponent();
             this.snake = snake;
             Jugar();
-            
+            this.snake2 = snake2;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -110,12 +111,6 @@ namespace SnakeGame
             Controls.Add(pictureBox);
 
 
-            pictureBox2 = new PictureBox();
-            pictureBox2.Size = new Size(anchoTablero * tamCelda, alturaTablero * tamCelda);
-            pictureBox2.Location = new Point(600, 10);
-            pictureBox2.BackColor = Color.Black;
-            pictureBox2.Paint += PintarJuego;
-            Controls.Add(pictureBox2);
 
          
 
@@ -226,7 +221,7 @@ namespace SnakeGame
                 revisarChoque(serpiente2, serpiente); 
                 puntos += 5;
                 pictureBox.Invalidate();
-                pictureBox2.Invalidate();
+               
 
                 Thread.Sleep(snake.Speed); 
 

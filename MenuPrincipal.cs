@@ -15,17 +15,19 @@ namespace SnakeGame
     {
 
         public Serpiente snake;
+        public Serpiente snake2;
 
-        public MenuPrincipal(Serpiente snake)
+        public MenuPrincipal(Serpiente snake, Serpiente snake2)
         {
             InitializeComponent();
             this.snake = snake;
+            this.snake2 = snake2;   
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide(); 
-            Form1 juego = new Form1(snake);
+            Form1 juego = new Form1(snake, snake2);
             juego.FormClosed += (s, args) => this.Close(); 
             juego.Show();
         }
@@ -33,7 +35,7 @@ namespace SnakeGame
         private void button2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            PersonalizacionSerpient juego = new PersonalizacionSerpient(snake);
+            PersonalizacionSerpient juego = new PersonalizacionSerpient(snake, snake2);
             juego.FormClosed += (s, args) => this.Close();
             juego.Show();
         }

@@ -13,15 +13,17 @@ namespace SnakeGame
     public partial class PersonalizacionSerpient : Form
     {
         private PictureBox pictureBox;
+        private PictureBox pictureBox2;
         private const int tamCelda = 50;
         private const int anchoTablero = 1;
         private const int alturaTablero = 4;
         Serpiente snake;
-        public PersonalizacionSerpient(Serpiente snake)
+        Serpiente snake2;
+        public PersonalizacionSerpient(Serpiente snake , Serpiente snake2)
         {
             InitializeComponent();
             this.snake=snake;
-
+            this.snake2=snake2;
 
         }
 
@@ -33,6 +35,15 @@ namespace SnakeGame
             pictureBox.BackColor = snake.Color;
             pictureBox.Paint += PintarJuego;
             Controls.Add(pictureBox);
+
+
+
+            pictureBox2 = new PictureBox();
+            pictureBox2.Size = new Size(anchoTablero * tamCelda, alturaTablero * tamCelda);
+            pictureBox2.Location = new Point(350, 70);
+            pictureBox2.BackColor = snake.Color;
+            pictureBox2.Paint += PintarJuego;
+            Controls.Add(pictureBox2);
         }
         private void PintarJuego(object sender, PaintEventArgs e)
         {
@@ -63,9 +74,19 @@ namespace SnakeGame
         private void button2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            MenuPrincipal juego = new MenuPrincipal(snake);
+            MenuPrincipal juego = new MenuPrincipal(snake,snake2);
             juego.FormClosed += (s, args) => this.Close();
             juego.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (colorDialog2.ShowDialog() == DialogResult.OK)
+            {
+
+                snake2.Color = colorDialog2.Color;
+            }
+            pictureBox2.BackColor = snake2.Color;
         }
     }
 }
